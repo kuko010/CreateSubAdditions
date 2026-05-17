@@ -188,7 +188,7 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
 }
 
-// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+// IDEA no longer automati cally downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
     module {
         isDownloadSources = true
