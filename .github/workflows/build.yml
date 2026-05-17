@@ -1,6 +1,9 @@
-name: Build
+name: Build and Release (Alpha)
 
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - '*'   # triggers on any tag – adjust to e.g. 'v*-alpha*' if you want only alpha tags
 
 jobs:
   build:
@@ -21,10 +24,18 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # This is needed to be able to run ./gradlew below
-      # You can run `git update-index --chmod +x gradlew` then remove this step.
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Create Alpha Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Alpha ${{ github.ref_name }}"
+          prerelease: true
+          files: build/libs/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
